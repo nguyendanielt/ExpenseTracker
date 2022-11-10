@@ -1,11 +1,8 @@
-import { Router } from 'express';
 import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-const router = Router();
-
-router.post('/register', async (req, res) => {
+export const register = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
 
     const userExists = await User.findOne({ email });  // check if user already exists based on email
@@ -22,9 +19,9 @@ router.post('/register', async (req, res) => {
         await user.save();
         res.status(201).json({ message: "User created" });
     }
-});
+}
 
-router.post('/login', async (req, res) => {
+export const login = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
@@ -37,13 +34,11 @@ router.post('/login', async (req, res) => {
             };
             // create jwt token for authentication
             const token = jwt.sign(payload, process.env.JWT_SECRET);
-            res.json({ message: "Logged in successfully", token });
+            res.json({ message: "Logged in successfully", token, user });
         } else {
             res.status(406).json({ message: "Invalid credentials" });
         }
     } else {
         res.status(406).json({ message: "User does not exist" });
     }
-});
-
-export default router;
+}

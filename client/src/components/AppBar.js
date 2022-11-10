@@ -8,12 +8,16 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import HomeIcon from '@mui/icons-material/Home';
 import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '../store/authSlice';
 
 const ButtonAppBar = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleLogout = () => {
         Cookies.remove('token');
+        dispatch(logoutUser());
         navigate('/login');
     }
 
