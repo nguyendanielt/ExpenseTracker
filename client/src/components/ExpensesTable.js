@@ -57,6 +57,14 @@ const ExpensesTable = ({ expenses, setEditExpense }) => {
         return dayjs(date).format('MMM D, YYYY');
     }
 
+    const findTotal = () => {
+        let total = 0;
+        expenses?.map((expense) => {
+            total += expense.amount;
+        });
+        return total;
+    }
+
     return (
         <Container>
             <Typography variant="h6" sx={{ marginTop: 5 }}>Your Current Expenses</Typography>
@@ -96,6 +104,16 @@ const ExpensesTable = ({ expenses, setEditExpense }) => {
                                 </StyledTableCell>
                             </StyledTableRow>
                         ))}
+                        <StyledTableRow>
+                            <StyledTableCell align="center">
+                                <b>Total:</b>
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                                <b>{findTotal()}</b>
+                            </StyledTableCell>
+                            <StyledTableCell />
+                            <StyledTableCell />
+                        </StyledTableRow>
                     </TableBody>
                 </Table>
             </TableContainer>
