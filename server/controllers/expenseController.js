@@ -7,13 +7,14 @@ export const index = async (req, res) => {
 
 export const createExpense = async (req, res) => {
     // receive expense form details
-    const { description, amount, date } = req.body;
+    const { description, amount, date, categoryId } = req.body;
 
     // store details in database using schema
     const expense = new Expense({
         description,
         amount, 
         userId: req.user.id,
+        categoryId,
         date 
     });
     await expense.save();

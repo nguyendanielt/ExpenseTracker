@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import AppBar from './components/AppBar';
 import { useDispatch } from 'react-redux';
-import { fetchUser } from './store/authSlice';
+import { setUser } from './store/authSlice';
 
 const App = () => {
     const token = Cookies.get('token');
@@ -20,7 +20,7 @@ const App = () => {
 
         if (res.ok) {
             const user = await res.json();
-            dispatch(fetchUser(user)); 
+            dispatch(setUser(user)); 
         }
 
         setIsLoading(false);

@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import expenseRoutes from './routes/expenseRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js';
 import passportConfig from './config/passport.js';
 import * as dotenv from 'dotenv';
 
@@ -27,6 +28,7 @@ app.get('/', (req, res) => {
 app.use('/expense', passport.authenticate('jwt', { session: false }), expenseRoutes);
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
+app.use('/category', passport.authenticate('jwt', { session: false }), categoryRoutes);
 
 await connect();
 

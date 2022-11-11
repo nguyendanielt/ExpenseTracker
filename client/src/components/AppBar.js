@@ -50,7 +50,12 @@ const ButtonAppBar = () => {
                             </Link>
                         </div>
                     ) : (
-                        <Button color="inherit" onClick={handleLogout}>Logout</Button>
+                        <div>
+                            <Link to={'/category'} style={{ textDecoration: "none", color: "inherit" }}>
+                                <Button color="inherit">Categories</Button>
+                            </Link>
+                            <Button color="inherit" onClick={handleLogout}>Logout</Button>
+                        </div>
                     )}
                 </Toolbar>
             </AppBar>

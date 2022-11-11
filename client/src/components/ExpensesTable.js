@@ -14,6 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Cookies from 'js-cookie';
+import { useSelector } from 'react-redux';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -37,6 +38,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const ExpensesTable = ({ expenses, setEditExpense }) => {
     const token = Cookies.get('token');
+    const user = useSelector((state) => state.auth.user || {});
 
     const deleteExpense = async (id) => {
         if (window.confirm("Are you sure you want to delete this expense?")) {
@@ -57,6 +59,11 @@ const ExpensesTable = ({ expenses, setEditExpense }) => {
         return dayjs(date).format('MMM D, YYYY');
     }
 
+    const getCategoryName = (id) => {
+        const category = (user.categories)?.find((category) => category._id === id);
+        return category ? category.label : "N/A";
+    }
+
     const findTotal = () => {
         let total = 0;
         expenses?.map((expense) => {
@@ -74,6 +81,7 @@ const ExpensesTable = ({ expenses, setEditExpense }) => {
                         <TableRow>
                             <StyledTableCell align="center">Description</StyledTableCell>
                             <StyledTableCell align="center">Amount ($)</StyledTableCell>
+                            <StyledTableCell align="center">Category</StyledTableCell>
                             <StyledTableCell align="center">Date</StyledTableCell>
                             <StyledTableCell align="center">Actions</StyledTableCell>
                         </TableRow>
@@ -85,6 +93,7 @@ const ExpensesTable = ({ expenses, setEditExpense }) => {
                                     {expense.description}
                                 </StyledTableCell>
                                 <StyledTableCell align="center">{expense.amount}</StyledTableCell>
+                                <StyledTableCell align="center">{getCategoryName(expense.categoryId)}</StyledTableCell>
                                 <StyledTableCell align="center">{formatDate(expense.date)}</StyledTableCell>
                                 <StyledTableCell align="center">
                                     <IconButton 
@@ -111,6 +120,7 @@ const ExpensesTable = ({ expenses, setEditExpense }) => {
                             <StyledTableCell align="center">
                                 <b>{findTotal()}</b>
                             </StyledTableCell>
+                            <StyledTableCell />
                             <StyledTableCell />
                             <StyledTableCell />
                         </StyledTableRow>

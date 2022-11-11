@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
-import { fetchUser } from '../store/authSlice';
+import { setUser } from '../store/authSlice';
 
 
 const Login = () => {
@@ -39,7 +39,8 @@ const Login = () => {
         
         if (res.ok) {
             Cookies.set('token', token);    // store token in cookies so it can be retrieved easily for authentication
-            dispatch(fetchUser(user));
+            dispatch(setUser(user));
+            window.location.reload();
             navigate('/');
         }
     }
