@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
     res.send("SERVER");
 });
 
-app.use('/expense', expenseRoutes);
+app.use('/expense', passport.authenticate('jwt', { session: false }), expenseRoutes);
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 

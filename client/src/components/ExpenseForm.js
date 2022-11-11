@@ -9,6 +9,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { Container } from '@mui/system';
+import Cookies from 'js-cookie';
 
 const ExpenseForm = ({ getExpenses, editExpense, setEditExpense }) => {
     const initialForm = {
@@ -16,6 +17,8 @@ const ExpenseForm = ({ getExpenses, editExpense, setEditExpense }) => {
         amount: 0,
         date: new Date()
     };
+
+    const token = Cookies.get('token');
 
     const [form, setForm] = useState(initialForm);
 
@@ -44,7 +47,8 @@ const ExpenseForm = ({ getExpenses, editExpense, setEditExpense }) => {
                 method: "POST",
                 body: JSON.stringify(form),
                 headers: {
-                    'content-type': "application/json"
+                    'content-type': "application/json",
+                    Authorization: `Bearer ${token}`
                 }
             });
 
@@ -58,7 +62,8 @@ const ExpenseForm = ({ getExpenses, editExpense, setEditExpense }) => {
                 method: "PATCH",
                 body: JSON.stringify(form),
                 headers: {
-                    'content-type': "application/json"
+                    'content-type': "application/json",
+                    Authorization: `Bearer ${token}`
                 }
             });
 
@@ -69,51 +74,51 @@ const ExpenseForm = ({ getExpenses, editExpense, setEditExpense }) => {
             }
         }
     }
-
+    
     return (
         <Container>
             <Card sx={{ minWidth: 275, marginTop: 5 }}>
-                    <CardContent>
-                        <Typography variant="h6" sx={{ marginTop: 2 }}>New Expense</Typography>
-                        <form onSubmit={handleSubmit}>
-                            <Typography variant="p">
-                                <TextField 
-                                    sx={{ marginRight: 2 }}
-                                    size="small"
-                                    id="outlined-basic" 
-                                    label="Description" 
-                                    variant="outlined"
-                                    name="description"
-                                    onChange={handleChange} 
-                                    value={form.description} 
+                <CardContent>
+                    <Typography variant="h6" sx={{ marginTop: 2 }}>New Expense</Typography>
+                    <form onSubmit={handleSubmit}>
+                        <Typography variant="p">
+                            <TextField 
+                                sx={{ marginRight: 2 }}
+                                size="small"
+                                id="outlined-basic" 
+                                label="Description" 
+                                variant="outlined"
+                                name="description"
+                                onChange={handleChange} 
+                                value={form.description} 
+                            />
+                            <TextField 
+                                sx={{ marginRight: 2 }}
+                                size="small"
+                                id="outlined-basic" 
+                                label="Amount ($)" 
+                                variant="outlined" 
+                                name="amount"
+                                onChange={handleChange} 
+                                value={form.amount} 
+                            />
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DesktopDatePicker
+                                    label="Date of Expense"
+                                    inputFormat="MM/DD/YYYY"
+                                    onChange={handleDate}
+                                    value={form.date}
+                                    renderInput={(params) => <TextField sx={{ marginRight: 2 }} size="small" {...params} />}
                                 />
-                                <TextField 
-                                    sx={{ marginRight: 2 }}
-                                    size="small"
-                                    id="outlined-basic" 
-                                    label="Amount" 
-                                    variant="outlined" 
-                                    name="amount"
-                                    onChange={handleChange} 
-                                    value={form.amount} 
-                                />
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DesktopDatePicker
-                                        label="Date of Expense"
-                                        inputFormat="MM/DD/YYYY"
-                                        onChange={handleDate}
-                                        value={form.date}
-                                        renderInput={(params) => <TextField sx={{ marginRight: 2 }} size="small" {...params} />}
-                                    />
-                                </LocalizationProvider>
-                                {(editExpense.description === undefined && editExpense.amount === undefined) ? (
-                                    <Button type="submit" variant="contained" color="success">Submit</Button>
-                                ) : (
-                                    <Button type="submit" variant="outlined" color="success">Update</Button>
-                                )}
-                            </Typography>
-                        </form>
-                    </CardContent>
+                            </LocalizationProvider>
+                            {(editExpense.description === undefined && editExpense.amount === undefined) ? (
+                                <Button type="submit" variant="contained" color="success">Submit</Button>
+                            ) : (
+                                <Button type="submit" variant="outlined" color="success">Update</Button>
+                            )}
+                        </Typography>
+                    </form>
+                </CardContent>
             </Card>
         </Container>
     );

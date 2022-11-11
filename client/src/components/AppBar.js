@@ -8,12 +8,13 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import HomeIcon from '@mui/icons-material/Home';
 import Cookies from 'js-cookie';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../store/authSlice';
 
 const ButtonAppBar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
     const handleLogout = () => {
         Cookies.remove('token');
@@ -39,13 +40,18 @@ const ButtonAppBar = () => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Expense Tracker
                     </Typography>
-                    <Link to={'/login'} style={{ textDecoration: "none", color: "inherit" }}>
-                        <Button color="inherit">Login</Button>
-                    </Link>
-                    <Link to={'/register'} style={{ textDecoration: "none", color: "inherit" }}>
-                        <Button color="inherit">Register</Button>
-                    </Link>
-                    <Button color="inherit" onClick={handleLogout}>Logout</Button>
+                    {(!isAuthenticated) ? (
+                        <div>
+                            <Link to={'/login'} style={{ textDecoration: "none", color: "inherit" }}>
+                                <Button color="inherit">Login</Button>
+                            </Link>
+                            <Link to={'/register'} style={{ textDecoration: "none", color: "inherit" }}>
+                                <Button color="inherit">Register</Button>
+                            </Link>
+                        </div>
+                    ) : (
+                        <Button color="inherit" onClick={handleLogout}>Logout</Button>
+                    )}
                 </Toolbar>
             </AppBar>
         </Box>

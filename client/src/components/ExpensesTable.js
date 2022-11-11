@@ -13,6 +13,7 @@ import Container from '@mui/material/Container';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
+import Cookies from 'js-cookie';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -35,10 +36,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const ExpensesTable = ({ expenses, setEditExpense }) => {
+    const token = Cookies.get('token');
+
     const deleteExpense = async (id) => {
         if (window.confirm("Are you sure you want to delete this expense?")) {
             const res = await fetch(`${process.env.REACT_APP_API_URL}/expense/${id}`, {
-                method: "DELETE"
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             });
 
             if (res.ok) {

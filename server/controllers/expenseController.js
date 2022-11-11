@@ -1,8 +1,8 @@
 import Expense from '../models/Expense.js';
 
 export const index = async (req, res) => {
-    const expenses = await Expense.find({}).sort({ date: -1 });  // look through database for all expenses
-    res.json(expenses);
+    const expenses = await Expense.find({ userId: req.user.id }).sort({ date: -1 });  // look through database for all
+    res.json(expenses);                                                               // user expenses in order of date
 }
 
 export const createExpense = async (req, res) => {
@@ -12,7 +12,8 @@ export const createExpense = async (req, res) => {
     // store details in database using schema
     const expense = new Expense({
         description,
-        amount,
+        amount, 
+        userId: req.user.id,
         date 
     });
     await expense.save();
