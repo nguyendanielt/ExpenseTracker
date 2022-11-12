@@ -22,6 +22,11 @@ const Home = () => {
         setExpenses(data);
     }
 
+    // don't render anything if expenses haven't been fetched
+    if (expenses.length === 0) {
+        return <div />;
+    }
+
     return (
         <div>
             <ExpenseForm 
@@ -30,7 +35,7 @@ const Home = () => {
                 setEditExpense={setEditExpense} 
             />
             <ExpensesTable 
-                expenses={expenses} 
+                expenses={expenses}
                 setEditExpense={setEditExpense} 
             />
         </div>
